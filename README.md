@@ -1,68 +1,93 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# react-testing-library 기본
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+## testing-library
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+CRA로 만든 react프로젝트에는 자동으로 테스팅 프레임워크가 적용되어있다. 아래는 cra의 package.json의 dependencies의 일부이다.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```json
+ "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1"
+  },
+```
 
-### `npm test`
+testing 관련 라이브러리가 있는 것을 확인 할 수 있다.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 사용하는 함수 
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+it
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 새로운 테스트 케이스를 만드는 함수이다.
 
-### `npm run eject`
+```
+expect
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- it 내부에서 해당 함수를 통하여 특정 값이 우리가 예상한 값이 나왔는지 확인 할 수 있다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+describe
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- 여러개의 `it`을 넣기 위함이다. `describe`안에는 또 여러개의 `describe`를 넣을 수 있다.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+render
+```
 
-## Learn More
+- 이 함수가 호출되면 그 결과물에는 DOM을 선택 할 수 있는 다양한 쿼리들과 `container`가 포함되어 있다. 여기서 `container`는 해당 컴포넌트의 최상위 `DOM`을 가르키며, 이를 가지고 스냅샷 테스팅을 할 수 도 있다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## 사용하는 쿼리 함수
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+각각의 쿼리들을 비슷한 규칙을 가지고 있다
 
-### Making a Progressive Web App
+```
+getBy*
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+- 조건에 일치하는 DOM 엘리먼트 하나를 선택. 존재하지 않으면 에러.
 
-### Advanced Configuration
+```
+getAllBy*
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+- 조건에 일치하는 DOM 엘리먼트 여러개를 선택. 존재하지 않으면 에러.
 
-### Deployment
+```
+queryBy*
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+- 조건에 일치하는 DOM 엘리먼트 하나를 선택. 존재하지 않아도 에러 X.
 
-### `npm run build` fails to minify
+```
+queryAllBy*
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- 조건에 일치하는 DOM 엘리먼트 여러개를 선택. 존재하지 않아도 에러 X.
+
+```
+findBy*
+```
+
+- 조건에 일치하는 DOM 엘리먼트 하나가 나타날 때까지 기다렸다가 해당 `DOM`을 선택하는 `Promise` 반환. 
+
+```
+findAllBy*
+```
+
+- 조건에 일치하는 DOM 엘리먼트 여러개가 나타날 때까지 기다렸다가 해당 `DOM`을 선택하는 `Promise` 반환. (기본 Timeout 조건인 4500ms 이후에도 나타나지 않으면 에러 발생)
+
